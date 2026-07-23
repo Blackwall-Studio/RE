@@ -1,0 +1,9 @@
+# local secrets & environments
+.env
+.venv/
+hexstrike-env/
+__pycache__/
+.pytest_cache/
+*.log
+tools/bin/
+_dl/

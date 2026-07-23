@@ -1,0 +1,11 @@
+fastapi>=0.115
+uvicorn[standard]>=0.30
+httpx2>=0.27
+pyyaml>=6.0
+python-dotenv>=1.0
+psutil>=6.0
+pefile>=2023.2.7
+capstone>=5.0
+mcp>=1.9
+pytest>=8.0
+pytest-asyncio>=0.23

@@ -1,0 +1,77 @@
+# ============================================================================
+# Synapse model configuration
+#
+# Cloud models are reached through ONE gateway (ZenMux, OpenAI-compatible).
+# Auxiliary peer-level gateways (e.g. Freebuff) are listed under
+# `extra_gateways` and addressed via "<name>/<model>". Local models (Ollama /
+# LM Studio / Colibri) are routed by `local::provider::model` and cost ZERO
+# tokens. Use "Refresh discovery" in the UI (or GET /api/models/discover)
+# to pull the real, current model IDs from each provider.
+# ============================================================================
+
+gateway:
+  type: openai_compat
+  base_url: https://zenmux.ai/api/v1
+  api_key_env: ZENMUX_API_KEY
+  timeout: 180
+
+# Peer-level OpenAI-compatible gateways alongside the primary ZenMux gateway.
+# Addressing: "<name>/<model>"  (a bare "<name>" falls back to default_model).
+extra_gateways:
+  - name: freebuff
+    base_url: https://freebuff.llm.pm/v1
+    api_key_env: FREEBUFF_API_KEY
+    timeout: 180
+    default_model: minimax-m3          # TODO: confirm via curl https://freebuff.llm.pm/v1/models
+  - name: freebuff_local
+    base_url: http://localhost:8080/v1
+    api_key_env: FREEBUFF_LOCAL_API_KEY   # optional; leave .env blank if the local proxy has no auth
+    timeout: 180
+    default_model: minimax-m3             # mirrors cloud; address as freebuff_local/<id> if the proxy serves different ids
+
+# Local, token-free providers (OpenAI-compatible endpoints).
+# ${VAR} (or ${VAR:-default}) is expanded by load_config via os.path.expandvars.
+local_providers:
+  - name: ollama
+    base_url: http://localhost:11434/v1
+    api_key: ollama
+  - name: lmstudio
+    base_url: http://localhost:1234/v1
+    api_key: lmstudio
+  - name: colibri
+    base_url: ${COLIBRI_BASE_URL}
+    api_key: ${COLIBRI_API_KEY}
+
+# Second brain behaviour.
+brain:
+  path: data/brain.db
+  prefer_local_for_learning: true   # background learning uses local LLM => no token cost
+  allow_cloud_learning: false       # if true, falls back to a cloud model when no local LLM is up
+
+# Default council roster. Verify/refresh IDs via discovery (GET /api/models/discover).
+roster:
+  - id: moonshotai/kimi-k3
+    label: Kimi K3
+    role: generalist
+  - id: deepseek/deepseek-v4-pro
+    label: DeepSeek V4 Pro
+    role: reasoning
+  - id: zhipu/glm-5.2
+    label: GLM 5.2
+    role: reasoning
+  - id: qwen/qwen3-coder-next
+    label: Qwen3 Coder Next
+    role: coding
+  - id: minimax/minimax-m3
+    label: MiniMax M3
+    role: generalist
+  - id: google/gemini-3-pro
+    label: Gemini 3 Pro
+    role: generalist
+  - id: google/gemini-2.5-flash
+    label: Gemini 2.5 Flash
+    role: fast
+  - id: freebuff/minimax-m3
+    label: MiniMax M3 (Freebuff path)
+    role: generalist
+    provider: freebuff

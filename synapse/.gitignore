@@ -1,0 +1,7 @@
+# local secrets / environments — never commit or ship these
+.env
+.venv/
+__pycache__/
+.pytest_cache/
+server_out.log
+server_err.log
