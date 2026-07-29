@@ -1,41 +1,52 @@
-# RE — HexStrike AI + Synapse bundle
+# 🔄 RE Toolkit
 
-Two AI-driven tools, packaged for zero-friction setup on Windows 10/11.
+**Reverse Engineering & AI Security Workbench**
 
-## HexStrike AI (MCP security toolkit)
+A zero-friction Windows toolkit bundling two powerful tools: **Synapse** — an AI-powered reverse engineering workbench with a galaxy-themed web UI — and **HexStrike AI** — a Model Context Protocol (MCP) penetration-testing framework with a native control panel.
 
-AI-powered penetration-testing MCP framework (upstream: [0x4m4/hexstrike-ai](https://github.com/0x4m4/hexstrike-ai), MIT) + a native control panel + a built-in control web page.
+## Tools
 
-```bat
-cd hexstrike-ai-master\hexstrike-ai-master
-SETUP.bat                                          :: builds python env
-powershell -ExecutionPolicy Bypass -File Install-Tools.ps1   :: downloads 25+ security tools + PATH
-HexStrikeControl.exe                               :: start/stop/port picker
-```
+### Synapse
 
-- Control page: <http://127.0.0.1:8888/> (target box + one-click scans, tools grid, process list)
-- Optional GUI: `HexStrikeControl.exe` (start/stop server, open control page, pick port)
-- `HexStrikeControl.cs` is the source of the GUI (compiles with stock .NET csc, no deps)
-
-## Synapse (council + RE workbench + second brain)
-
-FastAPI + uvicorn server with a galaxy-themed web UI.
+An AI research lab and "second brain" workspace built with FastAPI + uvicorn. Configure multiple AI provider keys (ZenMux, Freebuff, Colibri) and access a galaxy-themed web UI for research, analysis, and collaborative reasoning.
 
 ```bat
 cd synapse
-SETUP.bat     :: builds python env + creates .env from template
-START.bat     :: or START.bat 8277 to pick a port
+SETUP.bat
+START.bat
 ```
 
-- UI: <http://127.0.0.1:8000> (or your chosen port)
-- Configure `.env` with your own ZenMux / Freebuff / Colibri keys (see `.env.example`)
+### HexStrike AI
+
+An AI-driven penetration-testing MCP framework with a built-in control panel and web dashboard. Automates security tool orchestration with one-click scans.
+
+```bat
+cd hexstrike-ai-master
+SETUP.bat
+powershell -ExecutionPolicy Bypass -File Install-Tools.ps1
+HexStrikeControl.exe
+```
+
+Control page: http://127.0.0.1:8888/
+
+## Features
+
+- **Zero-Friction Setup** — Everything is path-independent; unzip anywhere and run SETUP.bat
+- **25+ Security Tools** — Auto-downloaded and PATH-configured via HexStrike install script
+- **AI-Integrated** — Both tools support multiple LLM providers for AI-assisted workflows
+- **Native Control Panel** — HexStrike ships with a .NET GUI for server management
+- **Web Dashboards** — Both Synapse and HexStrike include browser-based interfaces
 
 ## Requirements
 
-- Windows 10/11, Python 3.10+
-- Everything else installs via the included SETUP.bat scripts
+- Windows 10/11
+- Python 3.10+
+- Everything else installs automatically via the included SETUP.bat scripts
 
-## Notes
+## License
 
-- No secrets in this repo — `.env` files are gitignored; use the provided `.env.example` templates.
-- `SHIP-TO-TESTERS.txt`-style flow: everything is path-independent, unzip anywhere.
+MIT
+
+---
+
+*Built by Blackwall Studio.*
